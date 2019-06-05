@@ -42,7 +42,8 @@ public class ToastUtils {
         if (toast == null){
             toast = createToast();
         }
-        toast.setText(text);
+        TextView tvMsg = toast.getView().findViewById(R.id.tv_toast_msg);
+        tvMsg.setText(text);
         toast.show();
     }
 
@@ -53,7 +54,6 @@ public class ToastUtils {
         toast.setView(contentView);
         toast.setGravity(Gravity.CENTER,0,0);
         toast.setDuration(Toast.LENGTH_LONG);
-        tvMsg.setText(Toast.LENGTH_LONG);
         tvMsg.setText(msg);
         return toast;
     }

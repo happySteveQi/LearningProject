@@ -11,8 +11,8 @@ import javax.inject.Inject;
 
 public abstract class BaseActivity<T extends BasePresenter> extends SimpleActivity implements BaseView{
 
-//    @Inject
-//    protected T mPresenter;
+    @Inject
+    protected T mPresenter;
 
 
     protected ActivityModule getActivityModule() {
@@ -29,14 +29,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends SimpleActivi
     protected void onViewCreated(){
         super.onViewCreated();
         initInject();
-//        if (mPresenter != null){
-//            mPresenter.attachView(this);
-//        }
+        if (mPresenter != null){
+            mPresenter.attachView(this);
+        }
     }
     @Override
     protected void onDestroy() {
-//        if (mPresenter != null)
-//            mPresenter.detachView();
+        if (mPresenter != null)
+            mPresenter.detachView();
         super.onDestroy();
     }
 

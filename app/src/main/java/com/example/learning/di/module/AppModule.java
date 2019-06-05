@@ -8,6 +8,7 @@ import com.example.learning.model.db.RealmHelper;
 import com.example.learning.model.http.HttpHelper;
 import com.example.learning.model.http.RetrofitHelper;
 import com.example.learning.model.prefs.SpHelper;
+import com.example.learning.model.prefs.SpHelperImpl;
 
 import javax.inject.Singleton;
 
@@ -48,8 +49,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    SpHelper providePreferencesHelper(SpHelper spHelper) {
-        return spHelper;
+    SpHelper providePreferencesHelper(SpHelperImpl spHelperImpl) {
+        return spHelperImpl;
     }
 
 }

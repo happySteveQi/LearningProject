@@ -15,5 +15,5 @@ public interface AppComponent {
 
     App getContext();//提供app的Context
 
-//    DataManager getDataManager(); //数据中心
+    DataManager getDataManager(); //数据中心
 }
