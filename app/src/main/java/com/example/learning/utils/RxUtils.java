@@ -1,6 +1,7 @@
 package com.example.learning.utils;
 
 import com.example.learning.model.http.exception.ApiException;
+import com.example.learning.model.http.response.MyHttpResponse;
 import com.example.learning.model.http.response.WXHttpResponse;
 
 import org.reactivestreams.Publisher;
@@ -24,8 +25,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RxUtils {
 
-    public static <T> FlowableTransformer<T,T> rxSchedulerHelper(){ // compose 简化线程
-        return new FlowableTransformer<T,T>(){
+    public static <T> FlowableTransformer<T, T> rxSchedulerHelper() { // compose 简化线程
+        return new FlowableTransformer<T, T>() {
             @Override
             public Flowable<T> apply(Flowable<T> observable) {
                 return observable.subscribeOn(Schedulers.io())
@@ -33,18 +34,38 @@ public class RxUtils {
             }
         };
     }
-    public static <T> FlowableTransformer<WXHttpResponse<T>,T> handleWXResult(){
+
+    public static <T> FlowableTransformer<WXHttpResponse<T>, T> handleWXResult() {
         return new FlowableTransformer<WXHttpResponse<T>, T>() {
             @Override
             public Flowable<T> apply(Flowable<WXHttpResponse<T>> httpResponseFlowable) {
                 return httpResponseFlowable.flatMap(new Function<WXHttpResponse<T>, Flowable<T>>() {
                     @Override
                     public Flowable<T> apply(WXHttpResponse<T> twxHttpResponse) throws Exception {
-                        if (twxHttpResponse.getCode() == 200){
+                        if (twxHttpResponse.getCode() == 200) {
                             return createData(twxHttpResponse.getNewslist());
-                        }else {
-                            return Flowable.error(new ApiException(twxHttpResponse.getMsg(),twxHttpResponse.getCode()));
+                        } else {
+                            return Flowable.error(new ApiException(twxHttpResponse.getMsg(), twxHttpResponse.getCode()));
                         }
+                    }
+                });
+            }
+        };
+    }
+
+    public static <T> FlowableTransformer<MyHttpResponse<T>, T> handleMyResult() {
+        return new FlowableTransformer<MyHttpResponse<T>, T>() {
+            @Override
+            public Flowable<T> apply(Flowable<MyHttpResponse<T>> httpResponseFlowable) {
+                return httpResponseFlowable.flatMap(new Function<MyHttpResponse<T>, Flowable<T>>() {
+                    @Override
+                    public Flowable<T> apply(MyHttpResponse<T> tMyHttpResponse) {
+                        if (tMyHttpResponse.getCode() == 200) {
+                            return createData(tMyHttpResponse.getData());
+                        } else {
+                            return Flowable.error(new ApiException(tMyHttpResponse.getMessage(), tMyHttpResponse.getCode()));
+                        }
+
                     }
                 });
             }
@@ -58,7 +79,7 @@ public class RxUtils {
                 try {
                     emitter.onNext(t);
                     emitter.onComplete();
-                }catch (Exception e){
+                } catch (Exception e) {
                     emitter.onError(e);
                 }
             }

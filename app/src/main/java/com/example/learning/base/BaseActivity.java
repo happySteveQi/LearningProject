@@ -1,11 +1,13 @@
 package com.example.learning.base;
 
 import android.support.v7.app.AppCompatDelegate;
+import android.view.ViewGroup;
 
 import com.example.learning.App;
 import com.example.learning.di.component.ActivityComponent;
 import com.example.learning.di.module.ActivityModule;
 import com.example.learning.di.component.DaggerActivityComponent;
+import com.example.learning.utils.SnackbarUtil;
 
 import javax.inject.Inject;
 
@@ -42,7 +44,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends SimpleActivi
 
     @Override
     public void showErrorMsg(String msg) {
-
+        SnackbarUtil.showShort(((ViewGroup)findViewById(android.R.id.content)).getChildAt(0),msg);
     }
 
     @Override
